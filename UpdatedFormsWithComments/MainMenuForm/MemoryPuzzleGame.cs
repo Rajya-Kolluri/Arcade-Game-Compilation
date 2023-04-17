@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,27 +17,28 @@ Professor: Barbara Bancroft
 Due Date: April 16, 2023
 ***********************************************************************/
 
+
 //Start R.I.
 namespace MainMenuForm
 {
     public partial class MemoryPuzzleGame : Form
     {
-        Point EmptyPoint;
+        Point EmptyPoint; // Represents a Point that has X and Y values set to zero
         ArrayList images = new ArrayList();
         public MemoryPuzzleGame()
         {
-            EmptyPoint.X = 180;
-            EmptyPoint.Y = 180;
+            EmptyPoint.X = 180; // set's X to 180
+            EmptyPoint.Y = 180; // Set's Y to 180
             InitializeComponent();
         }
-
+        // Will add cropped images to 8 boxes
         private void AddImagesToButtons(ArrayList images)
         {
             int i = 0;
             int[] arr = { 0, 1, 2, 3, 4, 5, 6, 7 };
 
             arr = suffle(arr);
-
+            // the 'Boxes' are buttons, each will get a random cropped image
             foreach (Button b in panel1.Controls)
             {
                 if (i < arr.Length)
@@ -47,19 +48,20 @@ namespace MainMenuForm
                 }
             }
         }
-
+        // shuffle images
         private int[] suffle(int[] arr)
         {
             Random rand = new Random();
             arr = arr.OrderBy(x => rand.Next()).ToArray();
             return arr;
         }
-
+    
         private void cropImageTomages(Image orginal, int w, int h)
         {
-            Bitmap bmp = new Bitmap(w, h);
+            Bitmap bmp = new Bitmap(w, h); //an object used to work with images defined by pixel data
 
-            Graphics graphic = Graphics.FromImage(bmp);
+            Graphics graphic = Graphics.FromImage(bmp); //provides methods for drawing objects to the display device
+
 
             graphic.DrawImage(orginal, 0, 0, w, h);
 
@@ -69,7 +71,7 @@ namespace MainMenuForm
 
             for (int x = 0; x < 8; x++)
             {
-                Bitmap piece = new Bitmap(90, 90);
+                Bitmap piece = new Bitmap(90, 90); //an object used to work with images defined by pixel data
 
                 for (int i = 0; i < 90; i++)
                     for (int j = 0; j < 90; j++)
@@ -77,9 +79,7 @@ namespace MainMenuForm
                             bmp.GetPixel(i + movr, j + movd));
 
                 images.Add(piece);
-
                 movr += 90;
-
                 if (movr == 270)
                 {
                     movr = 0;
@@ -88,12 +88,12 @@ namespace MainMenuForm
             }
 
         }
-
+        // if any button is clicked it will move
         private void button1_Click(object sender, EventArgs e)
         {
             MoveButton((Button)sender);
         }
-
+        // Helps buttons swap and move
         private void MoveButton(Button btn)
         {
             if (((btn.Location.X == EmptyPoint.X - 90 || btn.Location.X == EmptyPoint.X + 90)
