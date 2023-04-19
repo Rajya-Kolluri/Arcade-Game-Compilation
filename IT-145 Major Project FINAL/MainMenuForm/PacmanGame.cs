@@ -12,7 +12,7 @@ namespace MainMenuForm
 {
     /***********************************************************************
     Major Project: Arcade Classics Compilation
-    Authors: Rajyah Kolluri, Reeham Imam, Manish Tamang, Matthew Eagan
+    Authors: Rajya Kolluri, Reeham Imam, Manish Tamang, Matthew Eagan
     Course: IT-145 - Foundation in App Development
     Professor: Barbara Bancroft
     Due Date: April 16, 2023
@@ -26,6 +26,7 @@ namespace MainMenuForm
         {
             InitializeComponent();
             resetGame();
+            /*sound starts playing*/
             soundPlayer = new SoundPlayer("pacman_beginning.wav");
             soundPlayer.PlayLooping();
         }
@@ -33,7 +34,7 @@ namespace MainMenuForm
         {
             gameEndButton.Visible = false;
             txtscore.Text = "Score: " + score;
-
+// Pacman movement
             if (goleft == true)
             {
                 pacman.Left -= playerSpeed;
@@ -54,6 +55,9 @@ namespace MainMenuForm
                 pacman.Top += playerSpeed;
                 pacman.Image = Properties.Resources.down;
             }
+            //teleportation
+            // if pacman goes off the screen on left, it shows from right and vice versa
+            // if pacman goes off top the edge of form, it shows from the bottom edge of the form and vice versa
             if (pacman.Left < -10)
             {
                 pacman.Left = 460;
@@ -75,6 +79,7 @@ namespace MainMenuForm
             {
                 if (x is PictureBox)
                 {
+                // if pacman touches coins, coins dissapear and increases score
                     if ((string)x.Tag == "coin" && x.Visible == true)
                     {
                         if (pacman.Bounds.IntersectsWith(x.Bounds))
@@ -86,6 +91,7 @@ namespace MainMenuForm
 
                         }
                     }
+                    //ends game if pacman touches wallks and ghosts
                     if ((string)x.Tag == "walls")
                     {
                         if (pacman.Bounds.IntersectsWith(x.Bounds))
@@ -116,15 +122,18 @@ namespace MainMenuForm
             }
             //moving Ghosts
             redGhost.Left += redGhostSpeed;
+            // red ghost oscillates between picturebox1 and picturebox2
             if (redGhost.Bounds.IntersectsWith(pictureBox1.Bounds) || redGhost.Bounds.IntersectsWith(pictureBox2.Bounds))
             {
                 redGhostSpeed = -redGhostSpeed;
             }
             yellowGhost.Left -= yellowGhostSpeed;
+            // yellow ghost oscillates between picturebox1 and picturebox2
             if (yellowGhost.Bounds.IntersectsWith(pictureBox3.Bounds) || yellowGhost.Bounds.IntersectsWith(pictureBox4.Bounds))
             {
                 yellowGhostSpeed = -yellowGhostSpeed;
             }
+            //pink ghost moves around screen and bounces back when touches the edges of form
 
             pinkGhost.Left -= pinkGhostX;
             pinkGhost.Top -= pinkGhostY;
@@ -136,8 +145,8 @@ namespace MainMenuForm
             {
                 pinkGhostX = -pinkGhostX;
             }
-
-            if (score == 73)
+// you win if you get all the coins dissapeared
+            if (score == 70)
             {
                 gameOver("You Win!!!!");
 
@@ -200,6 +209,7 @@ namespace MainMenuForm
         }
         private void resetGame()
         {
+        //restarts game and makes sure everything is back in its position
             txtscore.Text = "Score: 0";
             score = 0;
             redGhostSpeed = 5;
@@ -226,7 +236,7 @@ namespace MainMenuForm
                 }
             }
         }
-
+// ends game and calculates the score
             private void gameOver(string message)
             {
                 isGameOver = true;
